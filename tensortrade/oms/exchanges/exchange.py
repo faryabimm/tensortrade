@@ -122,7 +122,9 @@ class Exchange(Component, TimedIdentifiable):
             The quote price of the specified trading pair, denoted in the core instrument.
         """
         price = Decimal(self._price_streams[str(trading_pair)].value)
-        if price == 0:
+        # TODO: below lines are commented by Mahdi lashkari
+        # there are some situations that stocks are not listed so the price of them are considered as zero and agent should not do action for this situation
+        '''if price == 0:
             raise ValueError("Price of trading pair {} is 0. Please check your input data to make sure there always is "
                              "a valid (nonzero) price.".format(trading_pair))
 
@@ -131,7 +133,7 @@ class Exchange(Component, TimedIdentifiable):
             raise ValueError("Price quantized in base currency precision ({}) would amount to 0 {}. "
                              "Please consider defining a custom instrument with a higher precision."
                              .format(trading_pair.base.precision, trading_pair.base))
-
+        '''
         return price
 
     def is_pair_tradable(self, trading_pair: 'TradingPair') -> bool:

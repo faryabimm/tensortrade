@@ -29,8 +29,8 @@ class ParallelDQNOptimizer(Process):
                  done_queue: Queue,
                  discount_factor: float = 0.9999,
                  batch_size: int = 128,
-                 #learning_rate: float = 0.0001,
-                 learning_rate: float = 0.001,
+                 learning_rate: float = 0.0001,
+                 # learning_rate: float = 0.001,
                  memory_capacity: int = 10000):
         super().__init__()
 
@@ -48,8 +48,8 @@ class ParallelDQNOptimizer(Process):
         memory = ReplayMemory(self.memory_capacity, transition_type=DQNTransition)
 
         # Optimization strategy.
-        #optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
-        optimizer = tf.keras.optimizers.Nadam(learning_rate=self.learning_rate)
+        optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
+        #optimizer = tf.keras.optimizers.NAdam(learning_rate=self.learning_rate)
 
         loss_fn = tf.keras.losses.Huber()
 

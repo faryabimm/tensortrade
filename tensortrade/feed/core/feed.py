@@ -31,6 +31,7 @@ class DataFeed(Stream[dict]):
         edges = self.gather()
 
         self.process = self.toposort(edges)
+        self.process_sets=set(self.process)
         self.compiled = True
         self.reset()
 
@@ -57,6 +58,8 @@ class DataFeed(Stream[dict]):
     def reset(self) -> None:
         for s in self.process:
             s.reset()
+        '''for s in self.inputs:
+            s.reset()'''
 
 
 class PushFeed(DataFeed):

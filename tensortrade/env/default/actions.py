@@ -199,7 +199,7 @@ class SimpleOrders(TensorTradeActionScheme):
 
     def __init__(self,
                  criteria: 'Union[List[OrderCriteria], OrderCriteria]' = None,
-                 trade_sizes: 'Union[List[float], int]' = 10,
+                 trade_sizes: 'Union[List[float], int]' = 5, # 5 replaced 10 by Mahdi
                  durations: 'Union[List[int], int]' = None,
                  trade_type: 'TradeType' = TradeType.MARKET,
                  order_listener: 'OrderListener' = None,
@@ -250,6 +250,10 @@ class SimpleOrders(TensorTradeActionScheme):
             return []
 
         (ep, (criteria, proportion, duration, side)) = self.actions[action]
+        
+        # added by Mahdi Lashkari. if price is zero, agent should do nothing
+        if ep.price == .0:
+            return []
 
         instrument = side.instrument(ep.pair)
         wallet = portfolio.get_wallet(ep.exchange.id, instrument=instrument)

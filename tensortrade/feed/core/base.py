@@ -214,7 +214,7 @@ class Stream(Generic[T], Named, Observable):
         for listener in self.listeners:
             if hasattr(listener, "reset"):
                 listener.reset()
-        
+
         for stream in self.inputs:
             stream.reset()
 
@@ -398,6 +398,41 @@ class Stream(Generic[T], Named, Observable):
             The list of streams sorted with respect to the order in which they
             should be run.
         """
+        '''
+        graph={}
+        for e in edges:
+            if e[0] in graph:
+                graph[e[0]].append(e[1])
+                if e[1] not in graph:
+                    graph[e[1]]=[]
+            else:
+                graph[e[0]]=[e[1]]
+                if e[1] not in graph:
+                    graph[e[1]]=[]
+        indegrees = {node : 0 for node in graph}
+        for node in graph:
+            for neighbor in graph[node]:
+               indegrees[neighbor] += 1 
+               
+        nodes_with_no_incoming_edges = []
+        for node in graph:
+            if indegrees[node] == 0:
+                nodes_with_no_incoming_edges.append(node)
+        
+        topological_ordering = [] 
+        while len(nodes_with_no_incoming_edges) > 0:
+    
+            # add one of those nodes to the ordering
+            node = nodes_with_no_incoming_edges.pop()
+            topological_ordering.append(node)
+        
+            # decrement the indegree of that node's neighbors
+            for neighbor in graph[node]:
+                indegrees[neighbor] -= 1
+                if indegrees[neighbor] == 0:
+                    nodes_with_no_incoming_edges.append(neighbor)
+        return topological_ordering
+        '''
         src = set([s for s, t in edges])
         tgt = set([t for s, t in edges])
 
